@@ -39,10 +39,7 @@ class Files
      * Searches for a list of files/folders matching the keyword,
      * path, type and extension.
      *
-     * @param string $keyword
-     * @param array $from
-     * @param array $type
-     * @param array $ext
+     * @param string $query
      * @param int $per_page
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -51,10 +48,10 @@ class Files
      *
      * @return string
      */
-    public function search(string $keyword, array $from = [], array $type = [], array $ext = [], int $per_page = 1000)
+    public function search(string $query, int $per_page = 1000)
     {
         return $this->client->get(
-            sprintf('files/search?query=%s&per_page=%d', $this->buildSearchQuery($keyword, $from, $type, $ext), $per_page)
+            sprintf('files/search?query=%s&per_page=%d', rawurlencode($query), $per_page)
         );
     }
 
@@ -470,36 +467,5 @@ class Files
     public function deleteVideoPosition(int $id)
     {
         return $this->client->post(sprintf('files/%d/start-from/delete', $id));
-    }
-
-    /**
-     * Builds a search query.
-     *
-     * @param string $keyword
-     * @param array $from
-     * @param array $type
-     * @param array $ext
-     *
-     * @see https://api.put.io/v2/docs/files.html#search
-     *
-     * @return string
-     */
-    private function buildSearchQuery(string $keyword, array $from = [], array $type = [], array $ext = [])
-    {
-        $query = rawurlencode($keyword);
-
-        if (count($from)) {
-            $query .= ' from: "'.implode(',', $from).'"';
-        }
-
-        if (count($type)) {
-            $query .= ' type:'.implode(',', $type);
-        }
-
-        if (count($ext)) {
-            $query .= ' ext:'.implode(',', $ext);
-        }
-
-        return $query;
     }
 }
