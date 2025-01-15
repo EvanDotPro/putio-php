@@ -43,7 +43,7 @@ class Files
      * @param array $from
      * @param array $type
      * @param array $ext
-     * @param int $page
+     * @param int $per_page
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
@@ -51,10 +51,10 @@ class Files
      *
      * @return string
      */
-    public function search(string $keyword, array $from = [], array $type = [], array $ext = [], int $page = 1)
+    public function search(string $keyword, array $from = [], array $type = [], array $ext = [], int per_page = 1000)
     {
         return $this->client->get(
-            sprintf('files/search/%s/page/%d', $this->buildSearchQuery($keyword, $from, $type, $ext), $page)
+            sprintf('files/search?query=%s&per_page=%d', $this->buildSearchQuery($keyword, $from, $type, $ext), $page)
         );
     }
 
@@ -486,7 +486,7 @@ class Files
      */
     private function buildSearchQuery(string $keyword, array $from = [], array $type = [], array $ext = [])
     {
-        $query = '/'.rawurlencode($keyword);
+        $query = rawurlencode($keyword);
 
         if (count($from)) {
             $query .= ' from: "'.implode(',', $from).'"';
