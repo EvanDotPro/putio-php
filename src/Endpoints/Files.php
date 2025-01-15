@@ -51,7 +51,7 @@ class Files
      *
      * @return string
      */
-    public function search(string $keyword, array $from = [], array $type = [], array $ext = [], int per_page = 1000)
+    public function search(string $keyword, array $from = [], array $type = [], array $ext = [], int $per_page = 1000)
     {
         return $this->client->get(
             sprintf('files/search?query=%s&per_page=%d', $this->buildSearchQuery($keyword, $from, $type, $ext), $per_page)
