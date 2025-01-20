@@ -215,6 +215,15 @@ class Files
     }
 
     /**
+     * Returns the download URL for a file.
+     */
+    public function downloadUrl(int $id)
+    {
+        $response = $this->client->get(sprintf('files/%d/url', $id));
+        return json_decode($response, true)['url'];
+    }
+
+    /**
      * Donwloads a file from put.io locally.
      *
      * @param int $id
