@@ -223,6 +223,12 @@ class Files
         return json_decode($response, true)['url'];
     }
 
+    public function nextFile(int $id)
+    {
+        $response = $this->client->get(sprintf('files/%d/next-file?file_type=VIDEO', $id));
+        return json_decode($response, true);
+    }
+
     /**
      * Donwloads a file from put.io locally.
      *
