@@ -225,7 +225,9 @@ class Files
 
     public function nextFile(int $id)
     {
-        $response = $this->client->get(sprintf('files/%d/next-file?file_type=VIDEO', $id));
+        $response = $this->client->get(sprintf('files/%d/next-file', $id), [], [
+            'file_type' => 'VIDEO',
+        ]);
         return json_decode($response, true);
     }
 
