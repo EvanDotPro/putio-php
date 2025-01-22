@@ -32,7 +32,10 @@ class Files
      */
     public function list(int $parent_id = 0)
     {
-        return $this->client->get('files/list', compact('parent_id'));
+        return $this->client->get('files/list', [
+            'parent_id' => $parent_id,
+            'breadcrumbs' => 'true',
+        ]);
     }
 
     /**
@@ -222,7 +225,22 @@ class Files
         $response = $this->client->get(sprintf('files/%d/url', $id));
         return json_decode($response, true)['url'];
     }
-
+    
+    public function details(int $parent_id = 0)
+    {
+        return $this->client->get('files/list', [
+            'parent_id' => $parent_id,
+            'stream_url_parent' => 'true',
+            'mp4_stream_url' => 'true',
+            'mp4_status_parent' => 'true',
+            'video_metadata_parent' => 'true',
+            'codecs_parent' => 'true',
+            'media_info_parent' => 'true',
+            'breadcrumbs' => 'true',
+            'total' => 'true',
+        ]);
+    }
+    
     public function nextFile(int $id)
     {
         $response = $this->client->get(sprintf('files/%d/next-file', $id), [
